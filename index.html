@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Presentación Interactiva - Jeampierre González</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutrals -->
+    <!-- Application Structure Plan: La aplicación está diseñada como un portafolio de una sola página con navegación fija para un fácil acceso a las secciones clave: Introducción, La Empresa, Mi Rol y Reflexión. Esta estructura transforma la presentación lineal en una experiencia de exploración no lineal. Los usuarios pueden saltar a la sección que más les interese. Se utilizan elementos interactivos como pestañas para los roles de TI y un organigrama visual para desglosar la información compleja, mejorando la usabilidad y el engagement en comparación con una lectura pasiva. -->
+    <!-- Visualization & Content Choices: 1. Organigrama (Organize): Se usa HTML/CSS para crear un diagrama de flujo visual, más intuitivo que una lista. Interacción: Hover para resaltar áreas. Justificación: Facilita la comprensión rápida de la estructura de la empresa. 2. Roles de TI (Organize/Inform): Se implementa un sistema de pestañas interactivas. Interacción: Click para cambiar el contenido visible. Justificación: Evita la sobrecarga de información presentando los detalles de cada rol de forma aislada y a demanda del usuario. 3. Distribución de Tareas (Inform/Compare): Se utiliza un gráfico de dona de Chart.js. Interacción: Tooltips al pasar el mouse. Justificación: Proporciona una representación visual e inmediata del enfoque de un rol Fullstack, que es más impactante que el texto solo. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #fdfdfc;
+            color: #1a1a1a;
+        }
+        .nav-link.active {
+            color: #84cc16; /* lime-500 */
+            font-weight: 700;
+        }
+        .tab.active {
+            background-color: #84cc16;
+            color: #ffffff;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .llm-output {
+            min-height: 50px;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-top: 1rem;
+            background-color: #fff;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
+            border: 1px solid #e5e7eb;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-gray-200">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="text-2xl font-bold text-gray-800">
+                <a href="#inicio">JG</a>
+            </div>
+            <div class="hidden md:flex space-x-8">
+                <a href="#sobre-mi" class="nav-link text-gray-600 hover:text-lime-500 transition-colors">Sobre Mí</a>
+                <a href="#empresa" class="nav-link text-gray-600 hover:text-lime-500 transition-colors">La Empresa</a>
+                <a href="#mi-rol" class="nav-link text-gray-600 hover:text-lime-500 transition-colors">Mi Rol</a>
+                <a href="#reflexion" class="nav-link text-gray-600 hover:text-lime-500 transition-colors">Reflexión</a>
+            </div>
+            <div class="md:hidden">
+                <button id="menu-btn" class="text-gray-600 focus:outline-none">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                </button>
+            </div>
+        </nav>
+        <div id="mobile-menu" class="hidden md:hidden px-6 pt-2 pb-4 space-y-2">
+            <a href="#sobre-mi" class="block nav-link text-gray-600 hover:text-lime-500">Sobre Mí</a>
+            <a href="#empresa" class="block nav-link text-gray-600 hover:text-lime-500">La Empresa</a>
+            <a href="#mi-rol" class="block nav-link text-gray-600 hover:text-lime-500">Mi Rol</a>
+            <a href="#reflexion" class="block nav-link text-gray-600 hover:text-lime-500">Reflexión</a>
+        </div>
+    </header>
+
+    <main>
+        <section id="inicio" class="min-h-screen flex items-center bg-gray-50">
+            <div class="container mx-auto px-6 text-center">
+                <h1 class="text-4xl md:text-6xl font-bold text-gray-800 mb-4 leading-tight">🚀 Conectando Datos y Desarrollo</h1>
+                <h2 class="text-2xl md:text-3xl text-gray-600 mb-6">Mi Rol como TSDS en el Campo Laboral</h2>
+                <p class="text-xl font-semibold text-lime-600 mb-2">Jeampierre González Peralta</p>
+                <p class="max-w-3xl mx-auto text-lg text-gray-500">
+                    Integrando técnica y negocio en un entorno <span class="font-semibold text-gray-700">data-driven</span> para construir soluciones escalables y eficientes.
+                </p>
+            </div>
+        </section>
+
+        <section id="sobre-mi" class="py-20 md:py-32">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-800">¿Quién Soy y Dónde Trabajo?</h2>
+                    <p class="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">Soy un desarrollador de software con experiencia en arquitectura modular, automatización y optimización de infraestructura IT. Actualmente me desempeño en una Startup enfocada en soluciones de manejo y procesamiento de datos.</p>
+                </div>
+
+                <div class="max-w-4xl mx-auto bg-white p-8 rounded-xl shadow-lg border border-gray-100 mb-12">
+                    <p class="text-center text-xl italic text-gray-700 leading-relaxed">
+                        "Combino habilidades técnicas con comunicación efectiva para desarrollar software escalable y colaborar en entornos multidisciplinarios."
+                    </p>
+                </div>
+
+                <!-- NEW: Gemini API Feature - Interview Question Generator -->
+                <div class="text-center mb-16 max-w-4xl mx-auto">
+                    <button id="generate-question-btn" class="bg-lime-600 hover:bg-lime-700 text-white font-bold py-3 px-6 rounded-full shadow-lg transition duration-300 transform hover:scale-105">
+                        ✨ Generar Pregunta de Entrevista
+                    </button>
+                    <div id="interview-question-output" class="llm-output text-left text-gray-700 font-medium hidden">
+                        <p class="text-lime-600 font-bold mb-1">Pregunta:</p>
+                        <p id="question-text"></p>
+                    </div>
+                </div>
+                <!-- End LLM Feature -->
+
+                <div class="mt-20 grid md:grid-cols-2 gap-12 max-w-5xl mx-auto">
+                    <div>
+                        <h3 class="text-2xl font-bold text-center mb-6 text-gray-800">Fortalezas Profesionales</h3>
+                        <ul class="space-y-4">
+                            <li class="bg-lime-50 text-lime-800 p-4 rounded-lg flex items-center">
+                                <span class="font-bold text-xl mr-4">✔</span>
+                                <div><span class="font-semibold">Comunicación técnica clara:</span> Facilito el entendimiento entre equipos técnicos y no técnicos.</div>
+                            </li>
+                            <li class="bg-lime-50 text-lime-800 p-4 rounded-lg flex items-center">
+                               <span class="font-bold text-xl mr-4">✔</span>
+                                <div><span class="font-semibold">Resolución de problemas complejos:</span> Abordo desafíos técnicos con un enfoque analítico y estructurado.</div>
+                            </li>
+                            <li class="bg-lime-50 text-lime-800 p-4 rounded-lg flex items-center">
+                                <span class="font-bold text-xl mr-4">✔</span>
+                                <div><span class="font-semibold">Trabajo colaborativo y documentación:</span> Fomento un ambiente de equipo y creo documentación accesible.</div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-bold text-center mb-6 text-gray-800">Puntos de Mejora y Perfeccionamiento</h3>
+                        <ul class="space-y-4">
+                            <li class="bg-amber-50 text-amber-800 p-4 rounded-lg flex items-center">
+                                <span class="font-bold text-xl mr-4">🎯</span>
+                                <div><span class="font-semibold">Profundizar en testing automatizado:</span> Implementar estrategias de QA más robustas.</div>
+                            </li>
+                            <li class="bg-amber-50 text-amber-800 p-4 rounded-lg flex items-center">
+                                <span class="font-bold text-xl mr-4">🎯</span>
+                                <div><span class="font-semibold">Mejorar tiempos de entrega:</span> Optimizar el flujo de trabajo en proyectos iterativos.</div>
+                            </li>
+                            <li class="bg-amber-50 text-amber-800 p-4 rounded-lg flex items-center">
+                                <span class="font-bold text-xl mr-4">🎯</span>
+                                <div><span class="font-semibold">Explorar nuevas herramientas de visualización:</span> Incorporar Power BI o Tableau para análisis de datos.</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="empresa" class="py-20 md:py-32 bg-gray-50">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-800">Pulpou: El Enfoque Data-Driven</h2>
+                    <p class="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">Esta sección explora la estructura, misión y roles tecnológicos de Pulpou, la startup donde aplico mis habilidades para transformar datos en valor estratégico.</p>
+                </div>
+                
+                <div class="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto mb-20">
+                    <div class="bg-white p-8 rounded-xl shadow-md border border-gray-100">
+                        <h3 class="text-2xl font-bold text-lime-600 mb-4">Visión</h3>
+                        <p class="text-gray-700">Ser referentes en soluciones tecnológicas que permitan a las organizaciones gestionar, analizar y aprovechar sus datos de manera eficiente y segura.</p>
+                    </div>
+                    <div class="bg-white p-8 rounded-xl shadow-md border border-gray-100">
+                        <h3 class="text-2xl font-bold text-lime-600 mb-4">Misión</h3>
+                        <p class="text-gray-700">Desarrollar software confiable y centrado en el usuario, integrando ciencia de datos y desarrollo fullstack para aportar valor a las decisiones estratégicas.</p>
+                    </div>
+                </div>
+
+                <div class="mb-20">
+                    <h3 class="text-2xl md:text-3xl font-bold text-center mb-10 text-gray-800">Estructura Organizacional y Flujo de Trabajo</h3>
+                    <div class="flex flex-col md:flex-row justify-center items-center md:items-stretch space-y-4 md:space-y-0 md:space-x-4 text-center">
+                        <div class="p-4 rounded-lg bg-white shadow-sm border w-full md:w-auto hover:shadow-lg transition-shadow">
+                            <p class="font-bold text-gray-700">Área de Producto</p>
+                            <p class="text-sm text-gray-500">Define las features</p>
+                        </div>
+                        <div class="text-2xl text-lime-500 self-center font-mono">&rarr;</div>
+                        <div class="p-4 rounded-lg bg-lime-100 shadow-sm border border-lime-200 w-full md:w-auto hover:shadow-lg transition-shadow">
+                            <p class="font-bold text-lime-800">Área de Desarrollo</p>
+                            <p class="text-sm text-lime-600">(Mi Ubicación)</p>
+                        </div>
+                        <div class="text-2xl text-lime-500 self-center font-mono">&rarr;</div>
+                        <div class="p-4 rounded-lg bg-white shadow-sm border w-full md:w-auto hover:shadow-lg transition-shadow">
+                            <p class="font-bold text-gray-700">Data Entry / DataOps</p>
+                            <p class="text-sm text-gray-500">Provee los datos</p>
+                        </div>
+                    </div>
+                     <p class="mt-6 text-center text-gray-600 max-w-2xl mx-auto">La colaboración con Producto y Data es constante para asegurar que las soluciones técnicas satisfagan las necesidades del negocio.</p>
+                </div>
+                
+                <div>
+                    <h3 class="text-2xl md:text-3xl font-bold text-center mb-10 text-gray-800">Roles Clave en el Área IT</h3>
+                    <div class="max-w-4xl mx-auto">
+                        <div class="flex flex-wrap justify-center gap-2 md:gap-4 mb-8">
+                            <button data-role="frontend" class="tab active py-2 px-4 rounded-full bg-gray-200 text-gray-700 font-semibold transition-all duration-300">Frontend</button>
+                            <button data-role="backend" class="tab py-2 px-4 rounded-full bg-gray-200 text-gray-700 font-semibold transition-all duration-300">Backend</button>
+                            <button data-role="devops" class="tab py-2 px-4 rounded-full bg-gray-200 text-gray-700 font-semibold transition-all duration-300">DevOps</button>
+                            <button data-role="dataops" class="tab py-2 px-4 rounded-full bg-gray-200 text-gray-700 font-semibold transition-all duration-300">DataOps/IT</button>
+                            <button data-role="qa" class="tab py-2 px-4 rounded-full bg-gray-200 text-gray-700 font-semibold transition-all duration-300">QA/Soporte</button>
+                        </div>
+                        <div id="roles-content" class="bg-white p-8 rounded-xl shadow-lg border border-gray-100 min-h-[180px]">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="mi-rol" class="py-20 md:py-32">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-800">Mi Rol: Desarrollador Fullstack</h2>
+                    <p class="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">Aquí detallo mis funciones, los proyectos en los que he participado, las metodologías que aplicamos y una visualización de cómo se distribuyen mis tareas.</p>
+                </div>
+                
+                <div class="grid md:grid-cols-2 gap-12 items-start">
+                    <div>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-6">Funciones y Metodologías</h3>
+                        <div class="space-y-6">
+                            <div class="bg-white p-6 rounded-lg shadow-sm border">
+                                <h4 class="font-bold text-lg text-lime-600">Funciones Principales</h4>
+                                <ul id="funciones-principales" class="mt-2 list-disc list-inside text-gray-600 space-y-1">
+                                    <li>Diseño de arquitectura modular escalable</li>
+                                    <li>Testing manual y automatizado</li>
+                                    <li>Documentación técnica accesible</li>
+                                </ul>
+                            </div>
+                            <div class="bg-white p-6 rounded-lg shadow-sm border">
+                                <h4 class="font-bold text-lg text-lime-600">Metodologías</h4>
+                                <ul class="mt-2 list-disc list-inside text-gray-600 space-y-1">
+                                    <li>Agile y Scrum para gestión iterativa</li>
+                                    <li>Iteración continua para mejoras constantes</li>
+                                    <li>Testing colaborativo para asegurar calidad</li>
+                                </ul>
+                            </div>
+                            <div class="bg-white p-6 rounded-lg shadow-sm border">
+                                <h4 class="font-bold text-lg text-lime-600">Stack y Proyectos</h4>
+                                <p class="mt-2 text-gray-600"><b class="text-gray-700">Tecnologías:</b> React, Next.js, Zustand, Node.js, Express, Docker.</p>
+                                <p class="mt-1 text-gray-600"><b class="text-gray-700">Proyectos:</b> Estabilización de proxy Dockerizado, mejora de interfaces de acceso a datos.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-6 text-center">Distribución de Tareas</h3>
+                        <div class="chart-container">
+                            <canvas id="roleChart"></canvas>
+                        </div>
+                        <p class="text-center mt-4 text-gray-600">Visualización de la distribución de mi tiempo y enfoque en el rol de desarrollador Fullstack.</p>
+                    </div>
+                </div>
+
+                <div class="mt-20">
+                    <h3 class="text-2xl md:text-3xl font-bold text-center mb-10 text-gray-800">Modalidad de Trabajo Remoto/Híbrido</h3>
+                    <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                        <div class="border-2 border-green-200 bg-green-50 p-6 rounded-lg">
+                            <h4 class="text-xl font-bold text-green-800 mb-3">Ventajas (↑)</h4>
+                            <ul class="list-disc list-inside text-green-700 space-y-2">
+                                <li>Flexibilidad horaria y autonomía técnica.</li>
+                                <li>Acceso a entornos de prueba dedicados.</li>
+                                <li>Concentración en tareas específicas de desarrollo.</li>
+                            </ul>
+                        </div>
+                        <div class="border-2 border-red-200 bg-red-50 p-6 rounded-lg">
+                            <h4 class="text-xl font-bold text-red-800 mb-3">Desventajas (↓)</h4>
+                            <ul class="list-disc list-inside text-red-700 space-y-2">
+                                <li>Dificultades de comunicación inter-área.</li>
+                                <li>Aislamiento en la resolución de problemas complejos.</li>
+                                <li>Necesidad de una autogestión muy estricta.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="reflexion" class="py-20 md:py-32 bg-gray-800 text-white">
+            <div class="container mx-auto px-6 text-center">
+                 <h2 class="text-3xl md:text-4xl font-bold mb-4">El TSDS: Más Allá del Código</h2>
+                 <p class="text-lg text-gray-300 max-w-3xl mx-auto mb-10">
+                    Mi experiencia en Pulpou me ha permitido confirmar que el rol del Técnico Superior en Desarrollo de Software va más allá de la programación. Se trata de integrar, comunicar y mejorar procesos continuamente.
+                 </p>
+                 <div class="max-w-3xl mx-auto border-l-4 border-lime-400 pl-8 text-left">
+                     <p class="text-xl md:text-2xl italic leading-relaxed text-gray-100">
+                         "El valor del TSDS radica en poder conectar la técnica con el negocio, adaptarse a contextos cambiantes y fomentar el trabajo colaborativo. El aprendizaje constante, la comunicación eficaz y el manejo de la frustración son claves."
+                     </p>
+                 </div>
+            </div>
+        </section>
+    </main>
+    
+    <footer class="bg-gray-900 text-gray-400">
+        <div class="container mx-auto px-6 py-8 text-center">
+            <!-- NEW: Gemini API Feature - HR Summary Generator -->
+            <button id="generate-summary-btn" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-5 rounded-full shadow-lg transition duration-300 mb-4">
+                ✨ Generar Resumen Ejecutivo para RR.HH.
+            </button>
+            <div id="hr-summary-output" class="llm-output text-left mx-auto max-w-3xl text-gray-200 hidden">
+                <p class="text-blue-400 font-bold mb-1">Resumen:</p>
+                <p id="summary-text" class="text-sm"></p>
+            </div>
+            <!-- End LLM Feature -->
+            <p class="mt-4">&copy; 2025 Jeampierre González Peralta. Presentación interactiva.</p>
+        </div>
+    </footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const rolesData = {
+        frontend: {
+            title: 'Desarrollo Frontend',
+            description: 'Responsable de la creación de la interfaz de usuario y la experiencia del cliente.',
+            tech: ['React', 'Next.js', 'Vite', 'Tailwind CSS']
+        },
+        backend: {
+            title: 'Desarrollo Backend',
+            description: 'Encargado de la lógica del servidor, las APIs y la gestión de bases de datos.',
+            tech: ['Node.js', 'Express', 'PostgreSQL']
+        },
+        devops: {
+            title: 'DevOps',
+            description: 'Gestiona la infraestructura, la integración continua y el despliegue de aplicaciones.',
+            tech: ['Docker', 'Nginx', 'CI/CD', 'AWS']
+        },
+        dataops: {
+            title: 'DataOps / IT',
+            description: 'Administra el flujo de datos, automatiza reportes y gestiona la infraestructura cloud.',
+            tech: ['N8N', 'Excel Automation', 'Google Cloud']
+        },
+        qa: {
+            title: 'QA / Soporte',
+            description: 'Asegura la calidad del software a través de testing y gestiona incidencias técnicas.',
+            tech: ['Jest', 'Cypress', 'Jira']
+        }
+    };
+
+    const tabs = document.querySelectorAll('.tab');
+    const rolesContent = document.getElementById('roles-content');
+
+    function updateRoleContent(role) {
+        const data = rolesData[role];
+        if (!data) return;
+
+        let techHtml = data.tech.map(t => `<span class="bg-lime-100 text-lime-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded-full">${t}</span>`).join('');
+
+        rolesContent.innerHTML = `
+            <h4 class="text-xl font-bold text-gray-800 mb-2">${data.title}</h4>
+            <p class="text-gray-600 mb-4">${data.description}</p>
+            <div>${techHtml}</div>
+        `;
+    }
+    
+    tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            tabs.forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+            updateRoleContent(tab.dataset.role);
+        });
+    });
+    
+    updateRoleContent('frontend');
+
+    const roleChartCtx = document.getElementById('roleChart').getContext('2d');
+    const roleChart = new Chart(roleChartCtx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Desarrollo Backend', 'Desarrollo Frontend', 'DevOps & Infra', 'Testing & Docs'],
+            datasets: [{
+                label: 'Distribución de Tareas',
+                data: [40, 40, 10, 10],
+                backgroundColor: [
+                    'rgba(132, 204, 22, 0.8)', // lime-500
+                    'rgba(163, 230, 53, 0.8)', // lime-400
+                    'rgba(190, 242, 100, 0.8)', // lime-300
+                    'rgba(217, 249, 157, 0.8)'  // lime-200
+                ],
+                borderColor: [
+                    'rgba(101, 163, 13, 1)',
+                    'rgba(132, 204, 22, 1)',
+                    'rgba(163, 230, 53, 1)',
+                    'rgba(190, 242, 100, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            let label = context.label || '';
+                            if (label) {
+                                label += ': ';
+                            }
+                            if (context.parsed !== null) {
+                                label += context.parsed + '%';
+                            }
+                            return label;
+                        }
+                    }
+                }
+            },
+            cutout: '60%'
+        }
+    });
+
+    const menuBtn = document.getElementById('menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    menuBtn.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+    });
+
+    const sections = document.querySelectorAll('section');
+    const navLinks = document.querySelectorAll('.nav-link');
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href').substring(1) === entry.target.id) {
+                        link.classList.add('active');
+                    }
+                });
+            }
+        });
+    }, { threshold: 0.5 });
+
+    sections.forEach(section => {
+        observer.observe(section);
+    });
+
+
+    // --- Gemini API Logic ---
+
+    // Function to handle API calls with exponential backoff
+    async function fetchWithBackoff(url, options, maxRetries = 5) {
+        for (let i = 0; i < maxRetries; i++) {
+            try {
+                const response = await fetch(url, options);
+                if (response.ok) {
+                    return response.json();
+                } else if (response.status === 429 && i < maxRetries - 1) {
+                    const delay = Math.pow(2, i) * 1000 + Math.random() * 1000;
+                    await new Promise(resolve => setTimeout(resolve, delay));
+                } else {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+            } catch (error) {
+                if (i === maxRetries - 1) throw error;
+            }
+        }
+    }
+
+    const apiKey = ""; 
+    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+
+    // --- Feature 1: Interview Question Generator ---
+    const generateQuestionBtn = document.getElementById('generate-question-btn');
+    const questionOutput = document.getElementById('interview-question-output');
+    const questionText = document.getElementById('question-text');
+    
+    const profileContext = `
+        Jeampierre González Peralta. Rol: Desarrollador Fullstack (TSDS).
+        Stack: React, Next.js, Zustand, Node.js, Express, Docker.
+        Enfoque: Arquitectura modular escalable, Testing, Documentación.
+        Experiencia: Startup data-driven (Pulpou). Fortalezas: Comunicación técnica, Resolución de problemas complejos.
+    `;
+
+    generateQuestionBtn.addEventListener('click', async () => {
+        generateQuestionBtn.disabled = true;
+        questionOutput.classList.remove('hidden');
+        questionText.textContent = 'Generando pregunta...';
+
+        const systemPrompt = "Eres un entrevistador senior para un puesto de Desarrollador Fullstack. Formula una única pregunta técnica de nivel intermedio basada en el perfil del candidato, enfocándote en su experiencia en arquitectura o la conexión entre el desarrollo Fullstack y el manejo de datos (data-driven). La pregunta debe ser directa y sin introducción.";
+        const userQuery = `Basándote en el siguiente perfil: ${profileContext}`;
+
+        const payload = {
+            contents: [{ parts: [{ text: userQuery }] }],
+            systemInstruction: { parts: [{ text: systemPrompt }] },
+        };
+
+        try {
+            const response = await fetchWithBackoff(apiUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            const text = response.candidates?.[0]?.content?.parts?.[0]?.text || 'Error al generar la pregunta.';
+            questionText.textContent = text.trim();
+        } catch (error) {
+            console.error('Error al llamar a la API de Gemini para la pregunta:', error);
+            questionText.textContent = 'Error: No se pudo generar la pregunta. Inténtalo de nuevo.';
+        } finally {
+            generateQuestionBtn.disabled = false;
+        }
+    });
+
+    // --- Feature 2: HR Summary Generator ---
+    const generateSummaryBtn = document.getElementById('generate-summary-btn');
+    const summaryOutput = document.getElementById('hr-summary-output');
+    const summaryText = document.getElementById('summary-text');
+    
+    // Collecting key data points for the summary
+    const summaryContext = `
+        Perfil profesional: Jeampierre González Peralta, Técnico Superior en Desarrollo de Software (TSDS).
+        Rol: Desarrollador Fullstack en Pulpou (Startup Data-Driven).
+        Habilidades clave: React, Node.js, Docker, Arquitectura modular escalable, Testing.
+        Valor diferencial: Conexión entre desarrollo técnico y decisiones de negocio (entorno data-driven).
+        Fortalezas blandas: Comunicación técnica clara y resolución de problemas complejos.
+        Puntos de mejora: Profundización en testing automatizado y exploración de herramientas de BI (Power BI/Tableau).
+    `;
+
+    generateSummaryBtn.addEventListener('click', async () => {
+        generateSummaryBtn.disabled = true;
+        summaryOutput.classList.remove('hidden');
+        summaryText.textContent = 'Generando resumen...';
+
+        const systemPrompt = "Actúa como un asistente de RR.HH. Tu tarea es generar un resumen ejecutivo conciso (máximo 4 frases) del perfil de un candidato TSDS. Este resumen debe ser persuasivo, destacar el valor del rol Fullstack y su enfoque en datos/arquitectura. El objetivo es captar la atención de un reclutador en segundos.";
+        const userQuery = `Genera un resumen ejecutivo para RR.HH. basado en el siguiente contexto: ${summaryContext}`;
+
+        const payload = {
+            contents: [{ parts: [{ text: userQuery }] }],
+            systemInstruction: { parts: [{ text: systemPrompt }] },
+        };
+
+        try {
+            const response = await fetchWithBackoff(apiUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            const text = response.candidates?.[0]?.content?.parts?.[0]?.text || 'Error al generar el resumen.';
+            summaryText.textContent = text.trim();
+        } catch (error) {
+            console.error('Error al llamar a la API de Gemini para el resumen:', error);
+            summaryText.textContent = 'Error: No se pudo generar el resumen. Inténtalo de nuevo.';
+        } finally {
+            generateSummaryBtn.disabled = false;
+        }
+    });
+});
+</script>
+
+</body>
+</html>
